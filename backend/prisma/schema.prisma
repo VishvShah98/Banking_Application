@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                          Int                  @id @default(autoincrement())
+  email                       String               @unique
+  password                    String
+  name                        String
+  contactNumber               String
+  accounts                    Account[]
+  sentTransactions            Transaction[]        @relation("SentTransactions")
+  receivedTransactions        Transaction[]        @relation("ReceivedTransactions")
+  pendingTransactionsSent     PendingTransaction[] @relation("SentTransaction")
+  pendingTransactionsReceived PendingTransaction[] @relation("ReceivedTransaction")
+  expenses                    Expense[] // New relation to expenses
+}
+
+model Account {
+  id           Int           @id @default(autoincrement())
+  userId       Int
+  user         User          @relation(fields: [userId], references: [id])
+  accountType  String
+  balance      Float
+  transactions Transaction[]
+}
+
+model Transaction {
+  id              Int             @id @default(autoincrement())
+  senderId        Int?
+  receiverId      Int?
+  sender          User?           @relation("SentTransactions", fields: [senderId], references: [id])
+  receiver        User?           @relation("ReceivedTransactions", fields: [receiverId], references: [id])
+  accountId       Int
+  account         Account         @relation(fields: [accountId], references: [id])
+  amount          Float
+  timestamp       DateTime        @default(now())
+  transactionType TransactionType
+}
+
+enum TransactionType {
+  SENT
+  RECEIVED
+  DEPOSIT
+  WITHDRAW
+}
+
+model PendingTransaction {
+  id         Int      @id @default(autoincrement())
+  senderId   Int
+  receiverId Int
+  sender     User     @relation("SentTransaction", fields: [senderId], references: [id])
+  receiver   User     @relation("ReceivedTransaction", fields: [receiverId], references: [id])
+  amount     Float
+  timestamp  DateTime
+}
+
+model Expense {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  name      String
+  amount    Float
+  createdAt DateTime @default(now())
+}
