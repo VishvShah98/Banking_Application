@@ -3,6 +3,7 @@ Project Explanation: https://youtu.be/amQLI9vewKU
 Live Implementation: https://bankingapp-frontend.onrender.com/
 
 1. Login Page
+
 ![Screenshot (9)](https://github.com/VishvShah98/Banking_Application/assets/70076769/9e340553-e9bb-4b15-b1ea-e47ae6ef8ece)
 
 2.
