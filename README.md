@@ -1,6 +1,6 @@
 Project Explanation: https://youtu.be/amQLI9vewKU
 
-Live Implementation: https://bankingapp-frontend.onrender.com/
+
 
 1. Login Page
 
